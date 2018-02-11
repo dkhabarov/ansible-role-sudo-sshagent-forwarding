@@ -1,0 +1,14 @@
+---
+- name: check sudoers.d exists
+  stat:
+    path: /etc/sudoers.d/
+  register: sudoers_d
+
+- name: ensure sudo keeps SSH_AUTH_SOCK in environment
+  copy:
+    src: etc/sudoers.d/ssh_auth_sock
+    dest: /etc/sudoers.d/ssh_auth_sock
+    mode: 0440
+    owner: root
+    group: root
+  when: sudoers_d.stat.exists
